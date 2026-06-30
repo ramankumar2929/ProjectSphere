@@ -20,7 +20,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -35,5 +35,10 @@
     "mongoose": "^9.7.3",
     "multer": "^2.2.0",
     "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "eslint": "^10.6.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.9.4"
   }
 }
