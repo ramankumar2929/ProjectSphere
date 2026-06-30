@@ -1,6 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 import jwt from "jsonwebtoken";
-import bcypt from "bcrypt";
+import bcrypt from "bcrypt";
 import { string } from "zod";
 
 const userSchema = new mongoose.Schema(
@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
         type: String
 
     },
-    linkedin:{
+    linkedIn:{
         type: String,
 
     },
@@ -64,10 +64,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save",async function(){
+userSchema.pre("save",async function(next){
     if(!this.isModified("password")) return ;
-    this.password = await bcypt.hash(this.password,10)
-    next()
+    this.password = await bcrypt.hash(this.password,10)
+    next
 })
 
 userSchema.methods.isPasswordCorrect = async function(password) {
@@ -103,4 +103,4 @@ process.env.REFRESH_TOKEN_SECRET,
 }
 
 
-const User = mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);
