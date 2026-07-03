@@ -1,15 +1,19 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, { mongo, trusted } from "mongoose";
 import { lowercase, string } from "zod";
 import { required } from "zod/mini";
 import { User } from "./user.model.js";
-
+import slugify from "slugify";
 const projectSchema = new mongoose.Schema(
   {
-    owner: {
+    ownername: {
+      type: String,
+      required: true,
+    },
+    ownerid: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      index:true
+      index: true,
     },
     title: {
       type: String,
@@ -20,9 +24,9 @@ const projectSchema = new mongoose.Schema(
     slug: {
       //for slugify
       type: String,
-       unique: true,
-       lowercase: true,
-      trim : true
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
     description: {
       type: String,
@@ -35,17 +39,19 @@ const projectSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      index :true
+      index: true,
     },
-    tags: [{
-        type:String,
-        index:true
-    }],
+    tags: [
+      {
+        type: String,
+        index: true,
+      },
+    ],
 
     difficulty: {
       type: String,
     },
-    githubLink: {
+    githublink: {
       type: String,
       required: true,
     },
@@ -58,12 +64,37 @@ const projectSchema = new mongoose.Schema(
     },
     screenshots: [
       {
-        type: String,
+        url: {
+          type: String,
+          required: true,
+        },
+        public_id: {
+          type: String,
+          required: true,
+        },
+        resource_type: {
+          type: String,
+          required: true,
+        },
       },
     ],
-    documents: {
-      type: String,
-    },
+
+    documents: [
+      {
+        url: {
+          type: String,
+          required: true,
+        },
+        public_id: {
+          type: String,
+          required: true,
+        },
+        resource_type: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     teamMembers: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -90,17 +121,16 @@ const projectSchema = new mongoose.Schema(
 );
 
 projectSchema.pre("save", function (next) {
+  if (!this.isModified("title")) {
+    return next();
+  }
 
-    if (!this.isModified("title")) {
-        return next();
-    }
+  this.slug = slugify(this.title, {
+    lower: true,
+    strict: true,
+  });
 
-    this.slug = slugify(this.title, {
-        lower: true,
-        strict: true
-    });
-
-    next();
+  next;
 });
 
 export const Project = mongoose.model("Project", projectSchema);

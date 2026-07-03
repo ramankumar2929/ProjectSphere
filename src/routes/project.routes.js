@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createProject } from "../controllers/project.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
-
+import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 
 const projectrouter = Router()
@@ -18,6 +18,7 @@ projectrouter.route("/createproject").post(
         maxCount: 5
     }
    ]),
+   verifyJWT,
     createProject
 )
 
