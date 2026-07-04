@@ -5,6 +5,7 @@ import { asynchandler } from "../utils/asynchandler.js";
 import { uploadonCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { deletefromcloudinary } from "../utils/cloudinary.js";
+ 
 
 const createProject = asynchandler(async (req, res) => {
   const ownername = req.user.fullName;
@@ -83,6 +84,7 @@ const createProject = asynchandler(async (req, res) => {
   if (!uploadedDocuments || !uploadedScreenshots) {
     throw new ApiError(400, "Error while uploading on cloudinary");
   }
+  
 
   const project = await Project.create({
     ownerid,
@@ -138,15 +140,16 @@ const getAllProjects = asynchandler(async (req, res) => {
 const getProjectById = asynchandler(async (req, res) => {
   const { projectId } = req.params;
 
+  console.log(req.params.projectId)
   const project = await Project.findById(projectId);
   if (!project) {
     throw new ApiError(404, "Project with given id is not found");
   }
-  project.views += 1;
+  project.views += 1;  
   await project.save({ validateBeforeSave: false });
 
   return res.status(200).json(new ApiResponse(200, project, "Project Fetched"));
-});
+});  
 
 const updateProject = asynchandler(async (req, res) => {
   const { projectId } = req.params;
@@ -194,7 +197,7 @@ const updateProject = asynchandler(async (req, res) => {
   if (status !== undefined) updateFields.status = status;
 
   let screenshotLocalPath;
-  if (
+  if ( 
     req.files &&
     Array.isArray(req.files.screenshots) &&
     req.files.screenshots.length > 0
@@ -202,7 +205,7 @@ const updateProject = asynchandler(async (req, res) => {
     screenshotLocalPath = req.files.screenshots.map((file) => file.path);
   }
 
-  let documentsLocalPath;
+  let documentsLocalPath; 
 
   if (
     req.files &&
@@ -222,7 +225,7 @@ const updateProject = asynchandler(async (req, res) => {
   !githubLink &&
   !liveDemo &&
   !teamMembers &&
-  !status &&
+  !status &&  
   !screenshotLocalPath &&
   !documentsLocalPath
 ) {
@@ -235,7 +238,7 @@ const updateProject = asynchandler(async (req, res) => {
     //deleting old screenshots
      
     for (const screenshot of project.screenshots) {
-      await deleteFromCloudinary(
+      await deletefromcloudinary(
         screenshot.public_id,
         screenshot.resource_type
       );
@@ -263,7 +266,7 @@ const updateProject = asynchandler(async (req, res) => {
     //deleting old documents
       
     for (const document of project.documents) {
-      await deleteFromCloudinary(
+      await deletefromcloudinary(
         document.public_id,
         document.resource_type
       );
@@ -301,4 +304,123 @@ const updateProject = asynchandler(async (req, res) => {
     .json(new ApiResponse(200, updatedProject, "Project updated Successfully"));
 });
 
-export { createProject, getAllProjects };
+const deleteProject = asynchandler(async(req,res)=>{
+  const {projectId} = req.params
+
+  const project = await Project.findById(projectId)
+
+  if(!project){
+    throw new ApiError(404,"No such project Exists")
+  }
+
+  // owner matches or not checking
+  if(project.ownerid.toString()!==req.user._id.toString()){
+    throw new ApiError(403,"Only owner of this project has access to delete")
+  }
+
+  // deleting screenshots from cloudinary
+     for (const screenshot of project.screenshots) {
+      await deletefromcloudinary(
+        screenshot.public_id,
+        screenshot.resource_type
+      );
+    }
+
+    // deleting documents from cloudinary
+
+    for (const document of project.documents) {
+      await deletefromcloudinary(
+        document.public_id,
+        document.resource_type
+      );
+    }
+
+    // deleting project from mongodb
+    await project.deleteOne()
+
+    // return 
+
+    return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        {},
+        "Project deleted Successfully"
+      )  
+    )
+ 
+
+}) 
+
+const getMyProjects = asynchandler(async(req,res)=>{
+  const myProjects = await Project.find({
+    ownerid : req.user._id
+  })
+
+  if(myProjects.length === 0)
+  {
+    throw new ApiError(404,"Loggined User has no projects")
+  }
+
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      myProjects,
+      "User projects Fetched"
+    )
+  )
+})
+
+const searchProjects = asynchandler(async(req,res)=>{
+  const {
+    title,
+    technologies,
+    category,
+    tags,
+    difficulty,
+    ownername,
+    status,
+  } = req.query
+
+  const filter = {}
+  if(title){filter.title = {
+    $regex :"title",
+    $options :"i"
+  }}
+  if(technologies){filter.technologies =  {
+    $regex :"technologies",
+    $options: "i"
+  }}
+  if(category){filter.category = category}
+  if(tags){filter.tags = tags}
+  if(difficulty){filter.difficulty = difficulty}
+  if(ownername){filter.ownername = ownername}
+  if(status){filter.status = status}
+
+  const projects = await Project.find(filter)
+  if(projects.length ===0){
+    throw new ApiError(404,"No such projects with given condition exists")
+  }
+
+  return res.status(200)
+  .json(
+      new ApiResponse(
+        200,
+        projects,
+        "Projects matching with given conditions fetched"
+    )
+  )
+
+})
+
+export { 
+  createProject, 
+  getAllProjects ,
+  getProjectById,
+  updateProject,
+  deleteProject,
+  getMyProjects,
+  searchProjects};

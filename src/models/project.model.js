@@ -59,8 +59,18 @@ const projectSchema = new mongoose.Schema(
       type: String,
     },
     thumbnail: {
-      type: String,
-      required: true,
+       url: {
+          type: String,
+          required: true,
+        },
+        public_id: {
+          type: String,
+          required: true,
+        },
+        resource_type: {
+          type: String,
+          required: true,
+        },
     },
     screenshots: [
       {
@@ -122,7 +132,7 @@ const projectSchema = new mongoose.Schema(
 
 projectSchema.pre("save", function (next) {
   if (!this.isModified("title")) {
-    return next();
+    return next;
   }
 
   this.slug = slugify(this.title, {
