@@ -387,11 +387,11 @@ const searchProjects = asynchandler(async(req,res)=>{
 
   const filter = {}
   if(title){filter.title = {
-    $regex :"title",
+    $regex :title,
     $options :"i"
   }}
   if(technologies){filter.technologies =  {
-    $regex :"technologies",
+    $regex :technologies,
     $options: "i"
   }}
   if(category){filter.category = category}
