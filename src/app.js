@@ -17,11 +17,13 @@ app.use(cookieParser())
 import router from "./routes/user.routes.js"
 import { projectrouter } from "./routes/project.routes.js";
 import { invitationRouter } from "./routes/invitation.routes.js";
+import { commentRouter } from "./routes/comment.routes.js";
 
 
 app.use("/api/v1/users", router)
 app.use("/api/v1/projects",projectrouter)
 app.use("/api/v1/invitations",invitationRouter)
+app.use("/api/v1/comments",commentRouter)
 
  
 export {app}
