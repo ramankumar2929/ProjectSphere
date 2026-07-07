@@ -66,9 +66,12 @@ const sendInvitation = asynchandler(async(req,res)=>{
 })
 
 const getMyInvitation = asynchandler(async(req,res)=>{
+  
     const myinvitation = await Invitation.find({
        receiver: req.user._id
-    })
+    }).populate("sender","userName")
+    .populate("project","title")
+
     if(myinvitation.length ===0){
         throw new ApiError(404,"You have not received any Invitations yet")
     }
@@ -85,9 +88,12 @@ const getMyInvitation = asynchandler(async(req,res)=>{
 })
 
 const getSentInvitation = asynchandler(async(req,res)=>{
+    
     const myinvitation = await Invitation.find({
        sender: req.user._id
-    })
+    }).populate("receiver", "userName")
+    .populate("project","title")
+
     if(myinvitation.length ===0){
         throw new ApiError(404,"You have not send any Invitations yet")
     }

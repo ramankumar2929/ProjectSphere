@@ -127,9 +127,9 @@ const createProject = asynchandler(async (req, res) => {
 });
 
 const getAllProjects = asynchandler(async (req, res) => {
-  const projects = await Project.find();
+  const projects = await Project.find().populate("ownerid", "avatar")  ;
 
-  if (getAllProjects.length === 0) {
+  if (projects.length === 0) {
     throw new ApiError(404, "No Projects found");
   }
   return res
@@ -140,8 +140,8 @@ const getAllProjects = asynchandler(async (req, res) => {
 const getProjectById = asynchandler(async (req, res) => {
   const { projectId } = req.params;
 
-  console.log(req.params.projectId)
-  const project = await Project.findById(projectId);
+   
+  const project = await Project.findById(projectId).populate("ownerid","avatar");
   if (!project) {
     throw new ApiError(404, "Project with given id is not found");
   }
