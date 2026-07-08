@@ -2,10 +2,8 @@ import { asynchandler } from "../utils/asynchandler.js";
 import { Project } from "../models/project.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Like } from "../models/like.model.js";
-import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { response } from "express";
-import { fa } from "zod/locales";
+ 
 
 const toogleLike= asynchandler(async(req,res)=>{
     const {projectId} = req.params
@@ -72,7 +70,7 @@ const getprojectLikes = asynchandler(async(req,res)=>{
             project : projectId
         }
     ).populate("user", "fullName avatar")
-    .populate("project", "title")
+     
 
     if(likes.length ===0 ){
         throw new ApiError(404,"No likes on this project")
@@ -83,7 +81,7 @@ const getprojectLikes = asynchandler(async(req,res)=>{
             new ApiResponse(
                 200,
                 likes,
-                "All Projects Fetched"
+                "All Likes Fetched"
             )
         )
     
@@ -130,7 +128,10 @@ const getMylikedProjects = asynchandler(async(req,res)=>{
         {
             user : req.user._id
         }
-    ).populate("project")
+    ).populate(
+    "project",
+    "title thumbnail category likesCount commentsCount"
+)
 
     if(myLikedProjects.length ===0){
         throw new ApiError(404,"you have not liked any projects yet")
@@ -154,9 +155,6 @@ const getMylikedProjects = asynchandler(async(req,res)=>{
 
 
 })
-
- 
-
 
 
 export {toogleLike,getprojectLikes,hasUserLiked, getMylikedProjects}
