@@ -21,6 +21,7 @@ import { commentRouter } from "./routes/comment.routes.js";
 import { likeRouter } from "./routes/like.router.js";
 import { bookmarkRouter } from "./routes/bookmark.routes.js";
 import { collectionRouter } from "./routes/collection.routes.js";
+import { analyticsRouter } from "./routes/analytics.routes.js";
 
 
 app.use("/api/v1/users", router)
@@ -30,5 +31,6 @@ app.use("/api/v1/comments",commentRouter)
 app.use("/api/v1/likes",likeRouter)
 app.use("/api/v1/bookmarks",bookmarkRouter)
 app.use("/api/v1/collections",collectionRouter)
+app.use("/api/v1/analytics",analyticsRouter)
  
 export {app}
