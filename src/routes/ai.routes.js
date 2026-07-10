@@ -1,9 +1,19 @@
 import { Router } from "express";
-import { testAI } from "../controllers/ai.controller.js";
+import { descriptionGenerator, projectAssistantChatbot, projectReviewGenerator, tagsGenerator } from "../controllers/ai.controller.js";
 
 const aiRouter = Router()
-
-aiRouter.route("/test").post(
-    testAI
+ 
+aiRouter.route("/aiDescription").post(
+    descriptionGenerator
 )
+aiRouter.route("/aiTags").post(
+    tagsGenerator
+)
+aiRouter.route("/aiReview").post(
+    projectReviewGenerator
+)
+aiRouter.route("/aiAssistant").post(
+    projectAssistantChatbot
+)
+
 export {aiRouter}
