@@ -23,6 +23,7 @@ import { bookmarkRouter } from "./routes/bookmark.routes.js";
 import { collectionRouter } from "./routes/collection.routes.js";
 import { analyticsRouter } from "./routes/analytics.routes.js";
 import { aiRouter } from "./routes/ai.routes.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 
 app.use("/api/v1/users", router)
@@ -34,5 +35,7 @@ app.use("/api/v1/bookmarks",bookmarkRouter)
 app.use("/api/v1/collections",collectionRouter)
 app.use("/api/v1/analytics",analyticsRouter)
 app.use("/api/v1/ai",aiRouter)
+
+app.use(errorHandler)
  
 export {app}
