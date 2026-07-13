@@ -4,6 +4,7 @@ import Landing from "../pages/Landing"
 import Home from "../pages/Home"
 import Login from "../pages/Login"
 import Register from "../pages/Register"
+import ProjectDetailsPage from "../pages/ProjectDetailsPage";
  
 
 function AppRoutes(){
@@ -13,6 +14,11 @@ function AppRoutes(){
             <Route path="/login" element= {<Login/>}/>
             <Route path="/register" element= {<Register/>}/>
             <Route path="/home" element={<Home/>}/>
+            {/* Dynamic project details route */}
+            <Route
+                path="/project/:projectId"
+                element={<ProjectDetailsPage />}
+            />
         </Routes>
     )
 }

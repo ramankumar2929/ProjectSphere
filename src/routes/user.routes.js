@@ -39,7 +39,7 @@ router.route("/updateavatar").post(
      updateUserAvatar
 )
 
-router.route("/currentuser").post(
+router.route("/currentuser").get(
     verifyJWT,
     getCurrentUser
 )

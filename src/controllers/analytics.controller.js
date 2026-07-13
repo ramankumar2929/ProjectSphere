@@ -74,7 +74,7 @@ const getTrendingProjects = asynchandler(async (req, res) => {
       views: -1,
     })
     .limit(5)
-    .select("title likesCount commentsCount views ownerid thumbnail slug")
+    .select("_id title likesCount commentsCount views ownerid thumbnail slug")
     .populate("ownerid", "fullName avatar");
 
   if (projectsinorder.length === 0) {
