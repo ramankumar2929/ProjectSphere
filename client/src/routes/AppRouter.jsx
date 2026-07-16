@@ -5,6 +5,8 @@ import Home from "../pages/Home"
 import Login from "../pages/Login"
 import Register from "../pages/Register"
 import ProjectDetailsPage from "../pages/ProjectDetailsPage";
+import CreateProjectPage from "../pages/CreateProjectPage";
+
  
 
 function AppRoutes(){
@@ -19,6 +21,7 @@ function AppRoutes(){
                 path="/project/:projectId"
                 element={<ProjectDetailsPage />}
             />
+            <Route path="/projects/new" element={<CreateProjectPage />} />
         </Routes>
     )
 }

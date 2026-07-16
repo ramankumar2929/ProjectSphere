@@ -280,7 +280,12 @@ export default function ProjectDetailsPage() {
   // The owner's avatar comes from the populated `ownerid` field.
   // `ownername` (the display name) lives directly on the project per the backend shape.
   const ownerAvatar = project?.ownerid?.avatar || null;
-  const ownerName = project?.ownername || "Unknown creator";
+  const ownerName =
+    project?.ownerid?.fullname ||
+    project?.ownername ||
+    "Unknown creator";
+
+const ownerLinkedin = project?.ownerid?.linkedin;
 
   return (
     <div className="min-h-screen w-full bg-[#030712] text-white selection:bg-violet-500/30">

@@ -303,7 +303,7 @@ export default function HeroSection() {
               className="mt-9 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
             >
               <Link
-                     to="/create-project"
+                     to="/projects/new"
                         className="group relative inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white bg-linear-to-r from-purple-500 to-blue-500 shadow-[0_0_30px_rgba(139,92,246,0.35)] transition-transform duration-300 hover:scale-[1.03] w-full sm:w-auto"
                      >
                           Create Project
