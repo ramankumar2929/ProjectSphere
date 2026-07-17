@@ -511,9 +511,9 @@ const ownerLinkedin = project?.ownerid?.linkedin;
         >
           <SectionHeading title="Project links" />
           <div className="flex flex-wrap gap-3">
-            {project.githubLink ? (
+            {project.githublink ? (
               <a
-                href={project.githubLink}
+                href={project.githublink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/4 px-5 py-3 text-sm font-medium text-white transition-all hover:bg-white/8 hover:scale-[1.02] active:scale-[0.98]"
@@ -643,35 +643,54 @@ const ownerLinkedin = project?.ownerid?.linkedin;
                 // teamMembers can be plain strings OR objects — handle both safely.
                 const isObject = typeof member === "object" && member !== null;
                 const name = isObject
-                  ? member.name || member.username || "Team member"
-                  : String(member);
-                const role = isObject ? member.role : null;
-                const avatar = isObject ? member.avatar : null;
+                   ? member.fullName || "Team member"
+                           : String(member);
+
+                const linkedIn = isObject ? member.linkedIn : null;
+                const avatar = isObject ? member.avatar :undefined;
+                 
 
                 return (
-                  <motion.div
-                    key={index}
-                    variants={staggerItem}
-                    whileHover={{ y: -3 }}
-                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/3 px-4 py-3"
-                  >
-                    {avatar ? (
-                      <img
-                        src={avatar}
-                        alt={name}
-                        className="h-8 w-8 rounded-full object-cover border border-white/10"
-                      />
-                    ) : (
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-cyan-500 text-xs font-semibold">
-                        {name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-sm text-white leading-tight">{name}</p>
-                      {role && <p className="text-xs text-gray-500 leading-tight">{role}</p>}
-                    </div>
-                  </motion.div>
-                );
+  <motion.div
+    key={member._id}
+    variants={staggerItem}
+    whileHover={{ y: -3 }}
+    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/3 px-4 py-3"
+  >
+    {avatar ? (
+      <img
+        src={avatar}
+        alt={name}
+        className="h-8 w-8 rounded-full object-cover border border-white/10"
+      />
+    ) : (
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-cyan-500 text-xs font-semibold">
+        {name.charAt(0).toUpperCase()}
+      </div>
+    )}
+
+      <div>
+      <p className="text-sm text-white leading-tight">
+        {name}
+      </p>
+
+      {linkedIn && (
+        <a
+  href={
+    linkedIn?.startsWith("http")
+      ? linkedIn
+      : `https://${linkedIn}`
+  }
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-xs text-cyan-400 hover:underline"
+>
+  LinkedIn Profile
+</a>
+      )}
+    </div>
+  </motion.div>
+);
               })}
             </div>
           </motion.section>

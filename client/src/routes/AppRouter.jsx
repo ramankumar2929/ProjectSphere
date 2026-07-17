@@ -22,6 +22,7 @@ function AppRoutes(){
                 element={<ProjectDetailsPage />}
             />
             <Route path="/projects/new" element={<CreateProjectPage />} />
+            <Route path="/profile" element={}/>
         </Routes>
     )
 }

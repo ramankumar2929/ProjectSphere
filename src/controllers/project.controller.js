@@ -143,7 +143,7 @@ const getProjectById = asynchandler(async (req, res) => {
    
   const project = await Project.findById(projectId)
     .populate("ownerid", "fullName linkedIn avatar")
-    .populate("teamMembers", "fullName linkedIn ");
+    .populate("teamMembers", "fullName linkedIn avatar");
     
   if (!project) {
     throw new ApiError(404, "Project with given id is not found");
