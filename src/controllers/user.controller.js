@@ -223,14 +223,14 @@ const changeCurrentPassword = await asynchandler(async (req, res) => {
 });
 
 const updateAccountDetails = asynchandler(async (req, res) => {
-  const { Fullname, bio, skills, github, linkedIn } = req.body;
+  const { fullName, bio, skills, github, linkedIn } = req.body;
 
-  if (!Fullname && !bio && !skills && !github && !linkedIn) {
+  if (!fullName && !bio && !skills && !github && !linkedIn) {
     throw new ApiError(400, "Changing fields are required");
   }
   const updateFields = {};
 
-  if (Fullname !== undefined) updateFields.Fullname = Fullname;
+  if (fullName !== undefined) updateFields.fullName = fullName;
   if (bio !== undefined) updateFields.bio = bio;
   if (skills !== undefined) updateFields.skills = skills;
   if (github !== undefined) updateFields.github = github;

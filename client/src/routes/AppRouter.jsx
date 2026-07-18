@@ -6,6 +6,8 @@ import Login from "../pages/Login"
 import Register from "../pages/Register"
 import ProjectDetailsPage from "../pages/ProjectDetailsPage";
 import CreateProjectPage from "../pages/CreateProjectPage";
+import Profile from "../pages/Profile"
+import EditProfile from "../pages/EditProfile"
 
  
 
@@ -22,7 +24,9 @@ function AppRoutes(){
                 element={<ProjectDetailsPage />}
             />
             <Route path="/projects/new" element={<CreateProjectPage />} />
-            <Route path="/profile" element={}/>
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile/edit" element={<EditProfile/>}/>
+
         </Routes>
     )
 }
