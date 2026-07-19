@@ -6,7 +6,7 @@ import { uploadonCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { deleteavatar } from "../utils/deleteavatar.js";
-
+import { Project } from "../models/project.model.js";
 const createAccessTokenandRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -298,6 +298,33 @@ const getCurrentUser = asynchandler(async (req, res) => {
     .json(new ApiResponse(200, req.user, "User fetched successfully"));
 });
 
+const getAllUsers = asynchandler(async (req, res) => {
+  const users = await User.find().select(
+    "fullName username avatar bio"
+  );
+
+  const usersWithProjects = await Promise.all(
+    users.map(async (user) => {
+      const projectCount = await Project.countDocuments({
+        ownerid: user._id,
+      });
+
+      return {
+        ...user.toObject(),
+        projectCount,
+      };
+    })
+  );
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      usersWithProjects,
+      "All users fetched successfully"
+    )
+  );
+});
+
 export {
   registerUser,
   loginUser,
@@ -306,5 +333,6 @@ export {
   changeCurrentPassword,
   updateAccountDetails,
   updateUserAvatar,
-  getCurrentUser
+  getCurrentUser,
+  getAllUsers
 };

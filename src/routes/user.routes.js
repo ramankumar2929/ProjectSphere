@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from "../middlewares/multer.middleware.js";
-import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshaccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../controllers/user.controller.js";
+import { changeCurrentPassword, getAllUsers, getCurrentUser, loginUser, logoutUser, refreshaccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router()
@@ -44,8 +44,9 @@ router.route("/currentuser").get(
     getCurrentUser
 )
 
-
-
+router.route("/allusers").get(
+    getAllUsers
+)
 
 
 

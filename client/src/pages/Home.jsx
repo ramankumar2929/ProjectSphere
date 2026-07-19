@@ -4,7 +4,7 @@ import StatsSection from "../components/StatsSection";
 import FeaturesSection from "../components/FeaturesSection";
 import TrendingProjects from "../components/TrendingProjects";
 // import MostLikedProjects from "../components/MostLikedProjects";
-// import MostViewedProjects from "../components/MostViewedProjects";
+import MostViewedProjects from "../components/MostViewedProjects";
 // import LatestProjects from "../components/LatestProjects";
 // import AIBanner from "../components/AIBanner";
 // import Footer from "../components/Footer";
@@ -23,11 +23,9 @@ function Home() {
 
       <TrendingProjects />
 
-      { /*  <MostLikedProjects />
-
       <MostViewedProjects />
 
-      <LatestProjects />
+      { /* <LatestProjects />
 
       <AIBanner />
 

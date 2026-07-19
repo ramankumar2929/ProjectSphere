@@ -35,6 +35,7 @@ app.use("/api/v1/bookmarks",bookmarkRouter)
 app.use("/api/v1/collections",collectionRouter)
 app.use("/api/v1/analytics",analyticsRouter)
 app.use("/api/v1/ai",aiRouter)
+ 
 
 app.use(errorHandler)
  

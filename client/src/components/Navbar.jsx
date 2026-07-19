@@ -55,7 +55,7 @@ const API_ROUTES = {
 };
 
 const NAV_LINKS = [
-  { label: "Home", to: "/" },
+  { label: "Home", to: "/home" },
   { label: "Projects", to: "/projects" },
   { label: "Developers", to: "/developers" },
   { label: "AI Tools", to: "/ai-tools" },
@@ -210,7 +210,7 @@ export default function Navbar() {
         {/* ── Logo ── */}
         <div className="flex shrink-0 items-center gap-3">
           <button
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/")}
             className="group flex items-center gap-2.5"
             aria-label="ProjectSphere home"
           >

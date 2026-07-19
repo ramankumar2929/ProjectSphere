@@ -10,8 +10,10 @@ import Profile from "../pages/Profile"
 import EditProfile from "../pages/EditProfile"
 import MyProjects from "../pages/MyProjects"
 import EditProject from "../pages/EditProject"
-
- 
+import Projects from "../pages/Projects";
+import Developers from "../pages/Developers"
+import AITools from "../pages/AITools"
+import Settings from "../pages/Settings"
 
 function AppRoutes(){
     return(
@@ -30,6 +32,10 @@ function AppRoutes(){
             <Route path="/profile/edit" element={<EditProfile/>}/>
             <Route path="/projects/mine" element ={<MyProjects/>}/>
             <Route path="/projects/edit/:projectId" element= {<EditProject/>}/>
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/developers" element={<Developers />} />
+            <Route path="/ai-tools" element={<AITools />} />
+            <Route path="/settings" element={<Settings />} />
         </Routes>
     )
 }
