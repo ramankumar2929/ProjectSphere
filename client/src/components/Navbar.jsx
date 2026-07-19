@@ -41,7 +41,9 @@ import {
  * to change — every fetch call reads from it.
  * ───────────────────────────────────────────────────────────────────── */
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8500/api/v1";
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://projectsphere-backend.onrender.com/api/v1";
 
 const API_ROUTES = {
   me: `${BASE_URL}/users/currentuser`,

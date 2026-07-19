@@ -20,8 +20,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
-  },
+  "server": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
+  "client": "npm run dev --prefix client",
+  "dev": "concurrently -n SERVER,CLIENT -c green,cyan \"npm run server\" \"npm run client\""
+},
   "dependencies": {
     "@google/genai": "^2.10.0",
     "bcrypt": "^6.0.0",
@@ -39,6 +41,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "concurrently": "^10.0.3",
     "eslint": "^10.6.0",
     "nodemon": "^3.1.14",
     "prettier": "^3.9.4"
