@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  contributedProjects,
   createProject,
   deleteProject,
   getAllProjects,
@@ -40,6 +41,9 @@ projectrouter
  )
  // my all projects
  projectrouter.route("/myprojects").get(verifyJWT,getMyProjects)
+
+ //contributed projects
+ projectrouter.route("/contributed").get(verifyJWT,contributedProjects)
 
    // for using projectid to getproject ,updateproject , deleteProject
 projectrouter

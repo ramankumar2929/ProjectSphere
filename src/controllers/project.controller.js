@@ -5,7 +5,7 @@ import { asynchandler } from "../utils/asynchandler.js";
 import { uploadonCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { deletefromcloudinary } from "../utils/cloudinary.js";
- 
+import slugify from "slugify";
 
 const createProject = asynchandler(async (req, res) => {
   const ownername = req.user.fullName;
@@ -177,6 +177,7 @@ const updateProject = asynchandler(async (req, res) => {
     liveDemo,
     teamMembers,
     status,
+    removedScreenshots
   } = req.body;
   
 
@@ -235,35 +236,58 @@ const updateProject = asynchandler(async (req, res) => {
   throw new ApiError(400, "Please fill things to update");
 }
 
+
+  // Remove screenshots selected by the user
+if (removedScreenshots) {
+  const screenshotsToRemove = JSON.parse(removedScreenshots);
+
+  // Delete from Cloudinary
+  for (const screenshot of screenshotsToRemove) {
+    await deletefromcloudinary(
+      screenshot.public_id,
+      screenshot.resource_type
+    );
+  }
+
+  // Remove from existing screenshots array
+  project.screenshots = project.screenshots.filter(
+    (existing) =>
+      !screenshotsToRemove.some(
+        (removed) => removed.public_id === existing.public_id
+      )
+  );
+}
+
   
 
-  if (screenshotLocalPath) {
-    //deleting old screenshots
-     
-    for (const screenshot of project.screenshots) {
-      await deletefromcloudinary(
-        screenshot.public_id,
-        screenshot.resource_type
-      );
-    }
+ // Existing screenshots after removing deleted ones
+let finalScreenshots = [...project.screenshots];
 
-    //uploading new screenshots
-    const uploadedScreenshots = await Promise.all(
-      screenshotLocalPath.map((path) => uploadonCloudinary(path))
-    );
+// Upload newly selected screenshots
+if (screenshotLocalPath) {
 
-    updateFields.screenshots = uploadedScreenshots.map((screenshot) => ({
-      url: screenshot.secure_url,
-      public_id: screenshot.public_id,
-      resource_type: screenshot.resource_type,
-    }));
+  const uploadedScreenshots = await Promise.all(
+    screenshotLocalPath.map((path) => uploadonCloudinary(path))
+  );
 
-    updateFields.thumbnail = {
-      url: uploadedScreenshots[0].secure_url,
-      public_id: uploadedScreenshots[0].public_id,
-      resource_type: uploadedScreenshots[0].resource_type,
-    };
-  }
+  const newScreenshots = uploadedScreenshots.map((screenshot) => ({
+    url: screenshot.secure_url,
+    public_id: screenshot.public_id,
+    resource_type: screenshot.resource_type,
+  }));
+
+  finalScreenshots.push(...newScreenshots);
+}
+
+// Save final screenshots
+updateFields.screenshots = finalScreenshots;
+
+// Always keep thumbnail in sync
+if (finalScreenshots.length > 0) {
+  updateFields.thumbnail = finalScreenshots[0];
+} else {
+  updateFields.thumbnail = null;
+}
 
   if(documentsLocalPath){
     //deleting old documents
@@ -419,6 +443,27 @@ const searchProjects = asynchandler(async(req,res)=>{
 
 })
 
+const contributedProjects = asynchandler(async(req,res)=>{
+  const projects = await Project.find(
+    {
+      teamMembers : req.user?._id
+    }
+  )
+
+  if(projects.length==0){
+    throw new ApiError(404,"No projects contributed")
+  }
+
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      projects,
+      "All contributed projects fetched"
+    )
+  )
+})
+
 export { 
   createProject, 
   getAllProjects ,
@@ -426,4 +471,5 @@ export {
   updateProject,
   deleteProject,
   getMyProjects,
-  searchProjects};
+  searchProjects,
+contributedProjects};

@@ -193,7 +193,7 @@ export default function Navbar() {
 
   const profileMenu = [
     { label: "My Profile", icon: User, to: "/profile" },
-    { label: "My Projects", icon: FolderKanban, to: "/profile/projects" },
+    { label: "My Projects", icon: FolderKanban, to: "/projects/mine" },
     { label: "Collections", icon: Layers, to: "/collections" },
     { label: "Bookmarks", icon: Bookmark, to: "/bookmarks" },
     { label: "Analytics", icon: BarChart3, to: "/analytics" },
@@ -210,7 +210,7 @@ export default function Navbar() {
         {/* ── Logo ── */}
         <div className="flex shrink-0 items-center gap-3">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="group flex items-center gap-2.5"
             aria-label="ProjectSphere home"
           >

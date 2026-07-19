@@ -8,6 +8,8 @@ import ProjectDetailsPage from "../pages/ProjectDetailsPage";
 import CreateProjectPage from "../pages/CreateProjectPage";
 import Profile from "../pages/Profile"
 import EditProfile from "../pages/EditProfile"
+import MyProjects from "../pages/MyProjects"
+import EditProject from "../pages/EditProject"
 
  
 
@@ -26,7 +28,8 @@ function AppRoutes(){
             <Route path="/projects/new" element={<CreateProjectPage />} />
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/profile/edit" element={<EditProfile/>}/>
-
+            <Route path="/projects/mine" element ={<MyProjects/>}/>
+            <Route path="/projects/edit/:projectId" element= {<EditProject/>}/>
         </Routes>
     )
 }
