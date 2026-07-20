@@ -218,23 +218,25 @@ Access Protected Routes
 ---
 
 # ☁️ Deployment Architecture
-
 ```
-                User
-                  │
-                  ▼
-      Vercel (React Frontend)
-                  │
-                  ▼
- Render (Express Backend API)
-                  │
-                  ▼
-           MongoDB Atlas
-                  │
-                  ▼
-            Cloudinary CDN
+User
+  │
+  ▼
+Vercel (React Frontend)
+  │
+  ▼
+Render (Express Backend API)
+  │
+  ├──────────────► Cloudinary
+  │                    │
+  │      Upload Image  │
+  │◄───────────────────┘
+  │     Returns Image URL
+  │
+  ▼
+MongoDB Atlas
+(Store Project Data + Cloudinary Image URLs)
 ```
-
 ---
 # 📸 Screenshots
 
