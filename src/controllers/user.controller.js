@@ -121,9 +121,10 @@ const loginUser = asynchandler(async (req, res) => {
   );
 
   const options = {
-    httpOnly: false,
-    secure: false,
-  };
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+};
 
   return res
     .status(200)
@@ -163,9 +164,10 @@ const refreshaccessToken = asynchandler(async (req, res) => {
     }
 
     const options = {
-      httpOnly: true,
-      secure: false,
-    };
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+};
 
     const { accessToken, refreshToken: newrefreshToken } =
       await createAccessTokenandRefreshToken(user._id);
@@ -194,9 +196,10 @@ const logoutUser = await asynchandler(async (req, res) => {
   });
 
   const options = {
-    httpOnly: true,
-    secure: false,
-  };
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+};
 
   return res
     .status(200)
